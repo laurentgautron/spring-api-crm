@@ -11,7 +11,7 @@ public class ErrorResponse {
     private String path;
 
     public ErrorResponse(String error, int status, String path) {
-        this.calendar = Calendar.getInstance(); // reécupère la date du moment
+        this.calendar = Calendar.getInstance(); // récupère la date du moment
         this.error = error;
         this.status = status;
         this.path = path;

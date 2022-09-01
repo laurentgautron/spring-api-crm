@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -80,7 +79,7 @@ public class CustomerController {
             
         } catch (Exception e) {
             System.out.println("an error was occured");
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ErrorResponseEntity.build("An error occured", 500, "/v1/customers/", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -96,6 +95,7 @@ public class CustomerController {
             Customer updated = customerService.updateCustomer(idLong, content);
             CustomerDTO dto = CustomerMapper.buildCustomerDTO(updated);
             return ResponseEntity.status(HttpStatus.OK).body(dto);
+            
         } catch (NotFoundException nf) {
             return ErrorResponseEntity.build("Customer was not found", 404, "/v1/customers/" + id, HttpStatus.NOT_FOUND);
         } catch (NumberFormatException nfe) {
@@ -110,14 +110,17 @@ public class CustomerController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteCustomer(@PathVariable("id") String id) {
         
-//        try {
-//            Long idLong = Long.parseLong(id);
-//            Customer customerToDelete = customerService.deleteCustomer(Long.MIN_VALUE);
-//            CustomerDTO dto = 
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-      return null;  
+        try {
+            Long idLong = Long.parseLong(id);
+            Customer customerToDelete = customerService.deleteCustomer(idLong);
+            CustomerDTO dto = CustomerMapper.buildCustomerDTO(customerToDelete);
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
+            
+        } catch (NotFoundException nfe) {
+            return ErrorResponseEntity.build("Customer was not found", 404, "/v1/customers/delete/" + id, HttpStatus.NOT_FOUND);
+        } catch (NumberFormatException e) {
+            return ErrorResponseEntity.build("The parameter 'id' is not valid", 400, "/v1/customers/" + id, HttpStatus.BAD_REQUEST);
+        }
     }
 
     
