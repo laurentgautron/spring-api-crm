@@ -10,7 +10,7 @@ public interface ICustomerService {
     List<Customer> findAll();
     Customer findById(Long id);
     Customer createCustomer(Customer customer);
-    CustomerDTO updateCustomer(Long id, Customer content);
-    CustomerDTO deleteCustomer(Long id);
-    void saveCustomer(Customer customer);
+    Customer updateCustomer(Long id, CustomerDTO content);
+    Customer deleteCustomer(Long id);
+    Customer save(Customer customer);
 }

@@ -5,7 +5,6 @@ import fr.m2i.apicrm.dto.CustomerMapper;
 import fr.m2i.apicrm.exception.NotFoundException;
 import fr.m2i.apicrm.model.Customer;
 import fr.m2i.apicrm.repository.CustomerRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO updateCustomer(Long id, Customer content) {
+    public Customer updateCustomer(Long id, CustomerDTO content) {
         
         Customer customerToUpdate = repo.findById(id).orElseThrow(() -> {
             throw new NotFoundException("customer with id: " + id + " was not found");
@@ -69,11 +68,11 @@ public class CustomerService implements ICustomerService {
         
         repo.save(customerToUpdate);
         
-        return CustomerMapper.buildCustomerDTO(customerToUpdate);
+        return customerToUpdate;
     }
     
     @Override
-    public CustomerDTO deleteCustomer(Long id) {
+    public Customer deleteCustomer(Long id) {
         
         Customer customerToDelete = repo.findById(id).orElseThrow(() -> {
             throw new NotFoundException("customer with id: " + id + " was not found");
@@ -81,12 +80,12 @@ public class CustomerService implements ICustomerService {
         
         repo.delete(customerToDelete);
         
-        return CustomerMapper.buildCustomerDTO(customerToDelete);
+        return customerToDelete;
     }
     
     @Override
-    public void saveCustomer(Customer customer) {
-        repo.save(customer);
+    public Customer save(Customer customer) {
+        return repo.save(customer);
     }
     
 }

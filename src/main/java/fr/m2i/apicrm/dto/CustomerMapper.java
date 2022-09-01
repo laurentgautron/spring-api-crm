@@ -33,7 +33,8 @@ public class CustomerMapper {
             return null;
         }
         
-        Boolean stateBool = customerDTO.getState().equals("ACTIF");
+        // le équals dans l'autre sens pour éviter les null Pointer exception
+        Boolean stateBool = "ACTIF".equals(customerDTO.getState());
         
         return new Customer(
                 customerDTO.getLastname(),
@@ -49,7 +50,11 @@ public class CustomerMapper {
         );
     }
     
-    public static Customer copy(Customer customer, Customer content) {
+    public static Customer copy(Customer customer, CustomerDTO content) {
+        
+        if (customer != null || content != null) {
+            return null;
+        }
         
         if (content.getLastname() != null) {
             customer.setLastname(content.getLastname());
@@ -89,5 +94,5 @@ public class CustomerMapper {
         
         return customer;
     }
-    
+        
 }

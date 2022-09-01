@@ -54,6 +54,7 @@ public class CustomerController {
             CustomerDTO dto = CustomerMapper.buildCustomerDTO(founded);
             return ResponseEntity.status(HttpStatus.OK).body(dto);
             
+        // on pourrait faire des log : System.out.println(...)
         } catch (NumberFormatException nfe) {
             return ErrorResponseEntity.build("The parameter 'id' is not valid", 400, "/v1/customers/" + id, HttpStatus.BAD_REQUEST);
         } catch (NotFoundException nfe) {
@@ -65,8 +66,7 @@ public class CustomerController {
     }
     
     // créer un client
-    @RequestMapping(value = "/create", 
-                    produces = MediaType.APPLICATION_JSON_VALUE, 
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, 
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.POST)
     public ResponseEntity<Object> createCustomer(@RequestBody CustomerDTO customerDTO) {
@@ -75,7 +75,9 @@ public class CustomerController {
             Customer customerToCreate = CustomerMapper.buildCustomer(customerDTO);
             Customer created = customerService.createCustomer(customerToCreate);
             CustomerDTO createdDTO = CustomerMapper.buildCustomerDTO(created);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdDTO);
+            // on met status OK car dns la norme du 201, on ne retourne rien
+            return ResponseEntity.status(HttpStatus.OK).body(createdDTO);
+            
         } catch (Exception e) {
             System.out.println("an error was occured");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -83,44 +85,39 @@ public class CustomerController {
     }
     
     // modifier un client
-    @RequestMapping(value = "/v1/customer/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateCustomer(@RequestBody CustomerDTO customerDTO, @RequestParam("id") String id) {
+    @RequestMapping(value = "/update/{id}", 
+                    method = RequestMethod.PUT,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateCustomer(@RequestBody CustomerDTO content, @PathVariable("id") String id) {
         
         try {
-            Long.parseLong(id);
+            Long idLong = Long.parseLong(id);
+            Customer updated = customerService.updateCustomer(idLong, content);
+            CustomerDTO dto = CustomerMapper.buildCustomerDTO(updated);
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        } catch (NotFoundException nf) {
+            return ErrorResponseEntity.build("Customer was not found", 404, "/v1/customers/" + id, HttpStatus.NOT_FOUND);
+        } catch (NumberFormatException nfe) {
+            return ErrorResponseEntity.build("The parameter 'id' is not valid", 400, "/v1/customers/" + id, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        
-        try {
-            
-            CustomerDTO updated = customerService.updateCustomer(Long.parseLong(id), CustomerMapper.buildCustomer(customerDTO));
-            return new ResponseEntity<>(updated, HttpStatus.OK);
-            
-        } catch (Exception e) {
-            System.out.println("An error was occured");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     
     // delete
     
-    @RequestMapping(value = "/v1/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteCustomer(@PathVariable("id") String id) {
         
-        try {
-            Long.parseLong(id);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        
-        try {
-            CustomerDTO deleted = customerService.deleteCustomer(Long.parseLong(id));
-            return new ResponseEntity<>(deleted, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        
+//        try {
+//            Long idLong = Long.parseLong(id);
+//            Customer customerToDelete = customerService.deleteCustomer(Long.MIN_VALUE);
+//            CustomerDTO dto = 
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+      return null;  
     }
 
     
