@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,7 +59,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.OK).body(dto);
             
         } catch (NotFoundException nfe) {
-            return ErrorResponseEntity.build("Order with id "+ id, 400, "/v1/orders/" + id, HttpStatus.NOT_FOUND);
+            return ErrorResponseEntity.build("Order with id "+ id, 404, "/v1/orders/" + id, HttpStatus.NOT_FOUND);
         } catch (NumberFormatException nfe) {
             return ErrorResponseEntity.build("the id:" + id + " is not valide", 400, "/v1/orders/" + id, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -89,7 +90,7 @@ public class OrderController {
     }
     
     // modifier une commande
-    @PutMapping(value = "/update/{id}",
+    @PutMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateOrder(@RequestBody OrderDTO orderDTO, @PathVariable("id") String id) {
@@ -103,15 +104,31 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.OK).body(updatedDTO);
             
         } catch (NotFoundException nfe) {
-            return ErrorResponseEntity.build("the order with id: "+ id + " was not found", 400, "/v1/orders/update/" + id, HttpStatus.NOT_FOUND);
+            return ErrorResponseEntity.build("the order with id: "+ id + " was not found", 404, "/v1/orders/" + id, HttpStatus.NOT_FOUND);
         } catch (NumberFormatException nfe) {
-            return ErrorResponseEntity.build("the id: "+ id + " is not valide", 400, "/v1/orders/update/" + id, HttpStatus.BAD_REQUEST);
+            return ErrorResponseEntity.build("the id: "+ id + " is not valide", 400, "/v1/orders/" + id, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ErrorResponseEntity.build("An error was occured", 500, "/v1/orders/update/"+ id, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ErrorResponseEntity.build("An error was occured", 500, "/v1/orders/"+ id, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
     // supprimer une commande
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteOrderById(@PathVariable("id") String id) {
+        
+        try {
+            Long idLong = Long.parseLong(id);
+            orderService.delete(idLong);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (NotFoundException nfe) {
+            return ErrorResponseEntity.build("the order with id: "+ id + " was not found", 404, "/v1/orders/"+id, HttpStatus.NOT_FOUND);
+        } catch (NumberFormatException nfe) {
+            return ErrorResponseEntity.build("the id: "+ id + " is not valide", 400, "/v1/orders/"+id, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ErrorResponseEntity.build("an error was occured", 500, "v1/orders/"+id, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

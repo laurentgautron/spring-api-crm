@@ -136,5 +136,9 @@ public class Order implements Serializable {
         this.state = state;
     }
     
+    @Override
+    public String toString() {
+        return "Order{" + "id=" + id + ", customer=" + customer + ", type=" + type + ", label=" + label + ", numberOfDays=" + numberOfDays + ", unitPrice=" + unitPrice + ", totalExcludeTaxe=" + totalExcludeTaxe + ", totalWithTaxe=" + totalWithTaxe + ", state=" + state + '}';
+    }
     
 }

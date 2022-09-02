@@ -76,6 +76,7 @@ public class OrderMapper {
         if (content.getCustomer() != null && content.getCustomer().getId() != null) {
             Customer customer = new Customer();
             customer.setId(content.getCustomer().getId());
+            order.setCustomer(customer);
         }
         
         if (content.getLabel() != null) {

@@ -47,7 +47,7 @@ public class OrderService implements IOrderService{
     public void delete(Long id) {
         
         Order orderToDelete = findById(id);
-        repo.save(orderToDelete);
+        repo.delete(orderToDelete);
     }
 
     @Override
