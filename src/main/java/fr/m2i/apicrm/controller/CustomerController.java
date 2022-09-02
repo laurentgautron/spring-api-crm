@@ -6,6 +6,7 @@ import fr.m2i.apicrm.exception.NotFoundException;
 import fr.m2i.apicrm.model.Customer;
 import fr.m2i.apicrm.response.ErrorResponseEntity;
 import fr.m2i.apicrm.service.ICustomerService;
+import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class CustomerController {
     
     // lister les clients
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value= "Return the list of all customers", nickname = "Get all customers", response=CustomerDTO.class)
     public ResponseEntity<Object> getAllCustomers() {
         List<Customer> customers = customerService.findAll();
         List<CustomerDTO> dtos = new ArrayList();
@@ -45,6 +47,7 @@ public class CustomerController {
     
     // récupérer les clients par id
     @GetMapping(value= "/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Return a customer", nickname = "Get a customer by id", response = CustomerDTO.class)
     public ResponseEntity<Object> getCustomerById(@PathVariable("id") String id) throws Exception {
         
         try {
@@ -68,6 +71,7 @@ public class CustomerController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, 
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     method = RequestMethod.POST)
+    @ApiOperation(value = "Create a customer", nickname = "Create a customer", response = CustomerDTO.class)
     public ResponseEntity<Object> createCustomer(@RequestBody CustomerDTO customerDTO) {
         
         try {
@@ -88,6 +92,7 @@ public class CustomerController {
                     method = RequestMethod.PUT,
                     produces = MediaType.APPLICATION_JSON_VALUE,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "update a customer", nickname = "Update a customer by id", response = CustomerDTO.class)
     public ResponseEntity<Object> updateCustomer(@RequestBody CustomerDTO content, @PathVariable("id") String id) {
         
         try {

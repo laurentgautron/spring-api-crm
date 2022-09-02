@@ -6,6 +6,7 @@ import fr.m2i.apicrm.exception.NotFoundException;
 import fr.m2i.apicrm.model.Order;
 import fr.m2i.apicrm.response.ErrorResponseEntity;
 import fr.m2i.apicrm.service.IOrderService;
+import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class OrderController {
     
     // lister les commandes
     @GetMapping
+    @ApiOperation(value = "Returns the list of all orders", nickname = "Get all orders", response = OrderDTO.class)
     public ResponseEntity<Object> getAllOrders() {
         
         List<Order> orders = orderService.findAll();
@@ -49,6 +51,7 @@ public class OrderController {
     
     // récupérer une commande par id
     @GetMapping("/{id}")
+    @ApiOperation(value = "Return a order", nickname = "Get a order by id", response = OrderDTO.class)
     public ResponseEntity<Object> getOrderById(@PathVariable("id") String id) {
         
         try {
@@ -76,6 +79,7 @@ public class OrderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @ApiOperation(value = "Create an order", nickname = "Create an order", response = OrderDTO.class)
     public ResponseEntity<Object> createOrder(@RequestBody OrderDTO dto) {
         try {
             Order toCreate = OrderMapper.buildOrder(dto);
@@ -93,6 +97,7 @@ public class OrderController {
     @PutMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "update a order", nickname = "Update an order by id", response = OrderDTO.class)
     public ResponseEntity<Object> updateOrder(@RequestBody OrderDTO orderDTO, @PathVariable("id") String id) {
         
         try {
@@ -115,6 +120,8 @@ public class OrderController {
     
     // supprimer une commande
     @DeleteMapping("/{id}")
+    // ici code 204 car on ne renvoie rien dans la réponse
+    @ApiOperation(value = "delete an order", nickname = "Delete an order by id", code = 204)
     public ResponseEntity<Object> deleteOrderById(@PathVariable("id") String id) {
         
         try {
