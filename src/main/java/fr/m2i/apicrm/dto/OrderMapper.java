@@ -2,14 +2,31 @@ package fr.m2i.apicrm.dto;
 
 import fr.m2i.apicrm.model.Customer;
 import fr.m2i.apicrm.model.Order;
+import fr.m2i.apicrm.model.Status;
 
 public class OrderMapper {
     
     public static OrderDTO buildOrderDTO(Order order) {
         
-        CustomerDTO customerDTO = CustomerMapper.buildCustomerDTO(order.getCustomer());
+        if (order == null) {
+            return new OrderDTO();
+        }
+        
+        CustomerDTO customerDTO = null;
+        
+        if (order.getCustomer() != null) {
+            customerDTO = CustomerMapper.buildCustomerDTO(order.getCustomer()); 
+        }
+        
+        String state = null;
+        
+        if (order.getState() != null) {
+            // name pour récupérer la valeur de l'ENUM
+            state = order.getState().name();
+        }
         
         return new OrderDTO(
+                order.getId(),
                 order.getType(),
                 order.getLabel(),
                 customerDTO,
@@ -17,14 +34,25 @@ public class OrderMapper {
                 order.getUnitPrice(),
                 order.getTotalExcludeTaxe(),
                 order.getTotalWithTaxe(),
-                order.getState()
+                state
         );
         
     }
     
     public static Order buildOrder(OrderDTO orderDTO) {
         
-        Customer customer = CustomerMapper.buildCustomer(orderDTO.getCustomer());
+        Customer customer = null;
+        
+        if (orderDTO.getCustomer() != null && orderDTO.getCustomer().getId() != null) {
+            customer = new Customer();
+            customer.setId(orderDTO.getCustomer().getId());
+        }
+        
+        Status state = null;
+        
+        if (orderDTO.getState() != null) {
+            state = Status.valueOf(orderDTO.getState());
+        }
         
         return new Order(
                 orderDTO.getType(),
@@ -34,7 +62,7 @@ public class OrderMapper {
                 orderDTO.getUnitPrice(),
                 orderDTO.getTotalExcludeTaxe(),
                 orderDTO.getTotalWithTaxe(),
-                orderDTO.getState()
+                state
         );
                 
     }
@@ -45,8 +73,9 @@ public class OrderMapper {
             return null;
         }
         
-        if (content.getCustomer() != null) {
-            order.setCustomer(content.getCustomer());
+        if (content.getCustomer() != null && content.getCustomer().getId() != null) {
+            Customer customer = new Customer();
+            customer.setId(content.getCustomer().getId());
         }
         
         if (content.getLabel() != null) {

@@ -1,5 +1,7 @@
 package fr.m2i.apicrm.service;
 
+import fr.m2i.apicrm.dto.OrderMapper;
+import fr.m2i.apicrm.exception.NotFoundException;
 import fr.m2i.apicrm.model.Order;
 import fr.m2i.apicrm.repository.OrderRepository;
 import java.util.List;
@@ -16,28 +18,41 @@ public class OrderService implements IOrderService{
         this.repo = repo;
     }
     
+    @Override
     public List<Order> findAll() {
         return repo.findAll();
     }
 
     @Override
     public Order findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        Order order = repo.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("order with id: " + id + " was not found");
+        });
+        
+        return order;
+        
     }
 
     @Override
-    public Order create(Order order) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Order update(Long id, Order order) {
+        
+        Order orderToUpdate = findById(id);
+        Order updated = OrderMapper.copy(order, orderToUpdate);
+        
+        return repo.save(updated);
     }
 
     @Override
-    public Order update(Order order) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void delete(Long id) {
+        
+        Order orderToDelete = findById(id);
+        repo.save(orderToDelete);
     }
 
     @Override
-    public Order delete(Order order) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Order save(Order order) {
+        return repo.save(order);
     }
     
 }

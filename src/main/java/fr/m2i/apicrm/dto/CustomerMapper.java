@@ -10,7 +10,7 @@ public class CustomerMapper {
             return new CustomerDTO();
         }
         
-        String state = customer.getState() ? "ACTIF" : "INACTIF";
+        String state = customer.getState() != null && customer.getState() ? "ACTIF" : "INACTIF";
         
         return new CustomerDTO(
                 customer.getId(),

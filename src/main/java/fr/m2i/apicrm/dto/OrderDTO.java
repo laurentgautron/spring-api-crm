@@ -1,8 +1,8 @@
 package fr.m2i.apicrm.dto;
 
-import fr.m2i.apicrm.model.Status;
-
 public class OrderDTO {
+    
+    private Long id;
     
     private String type;
     
@@ -12,23 +12,30 @@ public class OrderDTO {
     
     private Integer numberOfDays;
     
-    private Double unitPrice;
+    private Float unitPrice;
     
-    private Integer totalExcludeTaxe;
+    private Float totalExcludeTaxe;
     
-    private Integer totalWithTaxe;
+    private Float totalWithTaxe;
     
-    private Status state;
+    private String state;
 
-    public OrderDTO(String type, String label, CustomerDTO customer, Integer numberOfDays, Double unitPrice, Integer totalExcludeTaxe, Integer totalWithTaxe, Status state) {
+    public OrderDTO() {
+    }
+
+    public OrderDTO(Long id, String type, String label, CustomerDTO customer, Integer numberOfDays, Float unitPrice, Float totalExcludeTaxe, Float totalWithTaxe, String state) {
+        this.id = id;
         this.type = type;
         this.label = label;
+        this.customer = customer;
         this.numberOfDays = numberOfDays;
         this.unitPrice = unitPrice;
         this.totalExcludeTaxe = totalExcludeTaxe;
         this.totalWithTaxe = totalWithTaxe;
         this.state = state;
     }
+    
+    
 
     public String getType() {
         return type;
@@ -54,35 +61,35 @@ public class OrderDTO {
         this.numberOfDays = numberOfDays;
     }
 
-    public Double getUnitPrice() {
+    public Float getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public Integer getTotalExcludeTaxe() {
+    public Float getTotalExcludeTaxe() {
         return totalExcludeTaxe;
     }
 
-    public void setTotalExcludeTaxe(Integer totalExcludeTaxe) {
+    public void setTotalExcludeTaxe(Float totalExcludeTaxe) {
         this.totalExcludeTaxe = totalExcludeTaxe;
     }
 
-    public Integer getTotalWithTaxe() {
+    public Float getTotalWithTaxe() {
         return totalWithTaxe;
     }
 
-    public void setTotalWithTaxe(Integer totalWithTaxe) {
+    public void setTotalWithTaxe(Float totalWithTaxe) {
         this.totalWithTaxe = totalWithTaxe;
     }
 
-    public Status getState() {
+    public String getState() {
         return state;
     }
 
-    public void setStatus(Status state) {
+    public void setStatus(String state) {
         this.state = state;
     }
 

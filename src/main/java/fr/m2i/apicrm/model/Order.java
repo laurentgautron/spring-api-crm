@@ -27,7 +27,7 @@ public class Order implements Serializable {
     @Column(name = "label")
     private String label;
     
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
     
@@ -35,13 +35,13 @@ public class Order implements Serializable {
     private Integer numberOfDays;
     
     @Column(name = "unitPrice")
-    private Double unitPrice;
+    private Float unitPrice;
     
-    @Column(name = "totalExcludeTaxe")
-    private Integer totalExcludeTaxe;
+    @Column(name = "total_exclude_taxe")
+    private Float totalExcludeTaxe;
     
-    @Column(name = "totalWithTaxe")
-    private Integer totalWithTaxe;
+    @Column(name = "total_with_taxe")
+    private Float totalWithTaxe;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition= "ENUM('CANCELED', 'OPTION', 'CONFIRM') NOT NULL")
@@ -51,7 +51,7 @@ public class Order implements Serializable {
         
     }
 
-    public Order(String type, String label, Customer customer, Integer numberOfDays, Double unitPrice, Integer totalExcludeTaxe, Integer totalWithTaxe, Status state) {
+    public Order(String type, String label, Customer customer, Integer numberOfDays, Float unitPrice, Float totalExcludeTaxe, Float totalWithTaxe, Status state) {
         this.type = type;
         this.label = label;
         this.customer = customer;
@@ -61,6 +61,8 @@ public class Order implements Serializable {
         this.totalWithTaxe = totalWithTaxe;
         this.state = state;
     }
+
+    
 
     public Long getId() {
         return id;
@@ -102,27 +104,27 @@ public class Order implements Serializable {
         this.numberOfDays = numberOfDays;
     }
 
-    public Double getUnitPrice() {
+    public Float getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public Integer getTotalExcludeTaxe() {
+    public Float getTotalExcludeTaxe() {
         return totalExcludeTaxe;
     }
 
-    public void setTotalExcludeTaxe(Integer totalExcludeTaxe) {
+    public void setTotalExcludeTaxe(Float totalExcludeTaxe) {
         this.totalExcludeTaxe = totalExcludeTaxe;
     }
 
-    public Integer getTotalWithTaxe() {
+    public Float getTotalWithTaxe() {
         return totalWithTaxe;
     }
 
-    public void setTotalWithTaxe(Integer totalWithTaxe) {
+    public void setTotalWithTaxe(Float totalWithTaxe) {
         this.totalWithTaxe = totalWithTaxe;
     }
 

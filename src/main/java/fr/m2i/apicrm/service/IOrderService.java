@@ -8,8 +8,8 @@ public interface IOrderService {
     
     List<Order> findAll();
     Order findById(Long id);
-    Order create(Order order);
-    Order update(Order order);
-    Order delete(Order order);
+    Order update(Long id, Order order);
+    void delete(Long id);
+    Order save(Order order);
     
 }
