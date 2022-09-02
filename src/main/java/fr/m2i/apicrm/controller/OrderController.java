@@ -120,7 +120,9 @@ public class OrderController {
         try {
             Long idLong = Long.parseLong(id);
             orderService.delete(idLong);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            
         } catch (NotFoundException nfe) {
             return ErrorResponseEntity.build("the order with id: "+ id + " was not found", 404, "/v1/orders/"+id, HttpStatus.NOT_FOUND);
         } catch (NumberFormatException nfe) {
