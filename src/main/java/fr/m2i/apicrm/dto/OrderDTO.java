@@ -8,6 +8,8 @@ public class OrderDTO {
     
     private String label;
     
+    private CustomerDTO customer;
+    
     private Integer numberOfDays;
     
     private Double unitPrice;
@@ -16,7 +18,17 @@ public class OrderDTO {
     
     private Integer totalWithTaxe;
     
-    private Status status;
+    private Status state;
+
+    public OrderDTO(String type, String label, CustomerDTO customer, Integer numberOfDays, Double unitPrice, Integer totalExcludeTaxe, Integer totalWithTaxe, Status state) {
+        this.type = type;
+        this.label = label;
+        this.numberOfDays = numberOfDays;
+        this.unitPrice = unitPrice;
+        this.totalExcludeTaxe = totalExcludeTaxe;
+        this.totalWithTaxe = totalWithTaxe;
+        this.state = state;
+    }
 
     public String getType() {
         return type;
@@ -66,14 +78,20 @@ public class OrderDTO {
         this.totalWithTaxe = totalWithTaxe;
     }
 
-    public Status getStatus() {
-        return status;
+    public Status getState() {
+        return state;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(Status state) {
+        this.state = state;
     }
-    
-    
+
+    public CustomerDTO getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerDTO customer) {
+        this.customer = customer;
+    }
     
 }

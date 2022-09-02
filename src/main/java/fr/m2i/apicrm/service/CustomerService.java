@@ -54,21 +54,19 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Long id, CustomerDTO content) {
+    public Customer updateCustomer(Long id, Customer content) {
         
-        Customer customerToUpdate = repo.findById(id).orElseThrow(() -> {
-            throw new NotFoundException("customer with id: " + id + " was not found");
-        });
+        Customer customerToUpdate = findById(id);
         
         if (content == null) {
             return null;
         }
         
-        customerToUpdate = CustomerMapper.copy(customerToUpdate, content);
+        Customer updated = CustomerMapper.copy(customerToUpdate, content);
         
-        repo.save(customerToUpdate);
         
-        return customerToUpdate;
+        
+        return repo.save(updated);
     }
     
     @Override

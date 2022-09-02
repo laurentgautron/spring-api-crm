@@ -50,9 +50,9 @@ public class CustomerMapper {
         );
     }
     
-    public static Customer copy(Customer customer, CustomerDTO content) {
+    public static Customer copy(Customer customer, Customer content) {
         
-        if (customer != null || content != null) {
+        if (customer == null || content == null) {
             return null;
         }
         

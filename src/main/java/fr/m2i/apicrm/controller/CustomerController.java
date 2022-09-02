@@ -92,7 +92,9 @@ public class CustomerController {
         
         try {
             Long idLong = Long.parseLong(id);
-            Customer updated = customerService.updateCustomer(idLong, content);
+            Customer customerToUpdate = CustomerMapper.buildCustomer(content);
+            Customer updated = customerService.updateCustomer(idLong, customerToUpdate);
+            System.out.println(updated);
             CustomerDTO dto = CustomerMapper.buildCustomerDTO(updated);
             return ResponseEntity.status(HttpStatus.OK).body(dto);
             
@@ -101,7 +103,7 @@ public class CustomerController {
         } catch (NumberFormatException nfe) {
             return ErrorResponseEntity.build("The parameter 'id' is not valid", 400, "/v1/customers/" + id, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ErrorResponseEntity.build("An error occured", 500, "/v1/customers/" + id, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     

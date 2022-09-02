@@ -10,7 +10,8 @@ public interface ICustomerService {
     List<Customer> findAll();
     Customer findById(Long id);
     Customer createCustomer(Customer customer);
-    Customer updateCustomer(Long id, CustomerDTO content);
+    Customer updateCustomer(Long id, Customer content);
     Customer deleteCustomer(Long id);
     Customer save(Customer customer);
+    
 }
