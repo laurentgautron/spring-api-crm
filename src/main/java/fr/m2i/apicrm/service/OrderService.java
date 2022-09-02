@@ -38,7 +38,7 @@ public class OrderService implements IOrderService{
     public Order update(Long id, Order order) {
         
         Order orderToUpdate = findById(id);
-        Order updated = OrderMapper.copy(order, orderToUpdate);
+        Order updated = OrderMapper.copy(orderToUpdate, order);
         
         return repo.save(updated);
     }

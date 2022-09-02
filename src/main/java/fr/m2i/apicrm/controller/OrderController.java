@@ -89,7 +89,9 @@ public class OrderController {
     }
     
     // modifier une commande
-    @PutMapping("/update/{id}")
+    @PutMapping(value = "/update/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateOrder(@RequestBody OrderDTO orderDTO, @PathVariable("id") String id) {
         
         try {
@@ -97,7 +99,8 @@ public class OrderController {
             Long idLong = Long.parseLong(id);
             Order ordertToUpdate = OrderMapper.buildOrder(orderDTO);
             Order updated = orderService.update(idLong, ordertToUpdate);
-            return ResponseEntity.status(HttpStatus.OK).body(updated);
+            OrderDTO updatedDTO = OrderMapper.buildOrderDTO(updated);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedDTO);
             
         } catch (NotFoundException nfe) {
             return ErrorResponseEntity.build("the order with id: "+ id + " was not found", 400, "/v1/orders/update/" + id, HttpStatus.NOT_FOUND);
@@ -105,7 +108,7 @@ public class OrderController {
             return ErrorResponseEntity.build("the id: "+ id + " is not valide", 400, "/v1/orders/update/" + id, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ErrorResponseEntity.build("An error was occured", 500, "/v1/orders/update/", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ErrorResponseEntity.build("An error was occured", 500, "/v1/orders/update/"+ id, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
