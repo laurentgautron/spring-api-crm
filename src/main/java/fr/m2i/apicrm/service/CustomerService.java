@@ -1,6 +1,5 @@
 package fr.m2i.apicrm.service;
 
-import fr.m2i.apicrm.dto.CustomerDTO;
 import fr.m2i.apicrm.dto.CustomerMapper;
 import fr.m2i.apicrm.exception.NotFoundException;
 import fr.m2i.apicrm.model.Customer;
